@@ -58,6 +58,21 @@ export default {
 				status: 'new',
 			},
 		];
+
+		const matchDateList = [
+			{
+				data: 'June 23',
+				IsMatchExist: true,
+			},
+			{
+				data: 'June 24',
+				IsMatchExist: true,
+			},
+			{
+				data: 'June 25',
+				IsMatchExist: true,
+			},
+		];
 		return { matchInfoList };
 	},
 };
