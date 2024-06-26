@@ -22,7 +22,12 @@
 					</div>
 					<div class="match-info-div-3">
 						<div>
-							<button class="match-join-button">Join</button>
+							<button
+								class="match-join-button"
+								@click="goToMatchDetail(matchInfo.id)"
+							>
+								Join
+							</button>
 						</div>
 						<span class="participants" style="font-size: 15px">10/18</span>
 					</div>
@@ -35,23 +40,29 @@
 
 <script>
 import { ref } from 'vue';
+import { useRouter } from 'vue-router';
 
 export default {
 	setup() {
+		const router = useRouter();
+
 		const matchInfoList = [
 			{
+				id: '1001',
 				matchTime: '00:00',
 				pitchName: 'Alster Lake',
 				pitchLocation: 'BundesStrase 17',
 				status: 'new',
 			},
 			{
+				id: '1002',
 				matchTime: '02:00',
 				pitchName: 'StadtPark',
 				pitchLocation: 'BundesStrase 17',
 				status: '',
 			},
 			{
+				id: '1003',
 				matchTime: '04:00',
 				pitchName: 'Haupbanhof',
 				pitchLocation: 'BundesStrase 17',
@@ -73,7 +84,16 @@ export default {
 				IsMatchExist: true,
 			},
 		];
-		return { matchInfoList };
+
+		const goToMatchDetail = id => {
+			router.push({
+				name: 'TheMatchDetail',
+				params: {
+					id: id,
+				},
+			});
+		};
+		return { matchInfoList, goToMatchDetail };
 	},
 };
 </script>

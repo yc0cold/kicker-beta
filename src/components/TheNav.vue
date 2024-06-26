@@ -6,7 +6,7 @@
 
 		<v-app-bar-title>Kicker-beta</v-app-bar-title>
 		<div class="flex-container">
-			<button class="nav-menu">Home</button>
+			<button class="nav-menu" @click="goToMain">Home</button>
 			<button @click="goToUserGuide" class="nav-menu">
 				User Guide
 				<!-- <a href="{{ userGuideUrl }}">User Guide</a> -->
@@ -26,13 +26,20 @@
 </template>
 
 <script>
+import { useRouter } from 'vue-router';
+
 export default {
 	setup() {
+		const router = useRouter();
+		const goToMain = () => {
+			router.push({ name: 'TheMain' });
+		};
+
 		const goToUserGuide = () => {
 			window.location.href =
 				'https://www.notion.so/Footie-f2044095c7f14231be9f67be50492e72';
 		};
-		return { goToUserGuide };
+		return { goToMain, goToUserGuide };
 	},
 };
 </script>

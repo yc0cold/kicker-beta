@@ -47,7 +47,8 @@
 					{{ matchDetail.location }}
 				</div>
 			</div>
-			<div><button class="match-join-button">Join</button></div>
+			<div><BookingDialog :matchDetail="matchDetail"></BookingDialog></div>
+			<!-- <div><button class="match-join-button">Join</button></div> -->
 		</div>
 	</div>
 </template>
@@ -55,9 +56,9 @@
 <script>
 import { reactive, ref } from 'vue';
 import MainBanner from '@/components/MainBanner.vue';
-
+import BookingDialog from '@/components/BookingDialog.vue';
 export default {
-	components: { MainBanner },
+	components: { MainBanner, BookingDialog },
 	setup() {
 		const matchDetail = reactive({
 			id: 1001,

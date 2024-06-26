@@ -4,7 +4,8 @@
 		<TheNav></TheNav>
 		<hr />
 		<!-- <TheMain></TheMain> -->
-		<TheMatchDetail></TheMatchDetail>
+		<router-view></router-view>
+		<!-- <TheMatchDetail></TheMatchDetail> -->
 		<TheFooter></TheFooter>
 	</v-app>
 </template>
