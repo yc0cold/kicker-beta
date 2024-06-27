@@ -31,3 +31,9 @@ coverage
 
 # Database
 server.js
+
+# env
+.env
+
+#mkcert
+/mkcert

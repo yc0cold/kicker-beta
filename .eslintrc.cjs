@@ -14,6 +14,7 @@ module.exports = {
 	],
 	env: {
 		'vue/setup-compiler-macros': true,
+		// node: true,
 	},
 	rules: {
 		'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'off',
