@@ -14,12 +14,17 @@
 			<!-- <div class="nav-menu">
 				<v-switch label="Switch"></v-switch>
 			</div> -->
-			<div>
+			<button @click="logout">Log out</button>
+
+			<div v-if="isAuthenticated">
 				<button>
 					<v-avatar color="info">
-						<v-icon icon="mdi-account-circle"></v-icon>
+						<v-icon icon="mdi-account-circle"> </v-icon>
 					</v-avatar>
 				</button>
+			</div>
+			<div v-else>
+				<v-btn variant="flat" color="indigo" @click="goToLogin">Login</v-btn>
 			</div>
 		</div>
 	</v-app-bar>
@@ -27,9 +32,15 @@
 
 <script>
 import { useRouter } from 'vue-router';
+import { useAuthStore } from '../stores/auth';
+import { reactive, computed } from 'vue';
 
 export default {
 	setup() {
+		const authStore = useAuthStore();
+		const { user } = authStore;
+
+		const isAuthenticated = computed(() => authStore.isAuthenticated);
 		const router = useRouter();
 		const goToMain = () => {
 			router.push({ name: 'TheMain' });
@@ -39,7 +50,29 @@ export default {
 			window.location.href =
 				'https://www.notion.so/Footie-f2044095c7f14231be9f67be50492e72';
 		};
-		return { goToMain, goToUserGuide };
+
+		const goToLogin = () => {
+			router.push({ name: 'Login' });
+		};
+
+		const logout = () => {
+			authStore.logout();
+			console.log(
+				'logout!! & authStore.isAuthenticated',
+				authStore.isAuthenticated,
+			);
+			router.push({ name: 'TheMain' });
+		};
+
+		console.log('Nav: isAuthenticated: ', isAuthenticated);
+		return {
+			goToMain,
+			goToUserGuide,
+			goToLogin,
+			user,
+			isAuthenticated,
+			logout,
+		};
 	},
 };
 </script>
