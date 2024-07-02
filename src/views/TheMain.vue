@@ -1,6 +1,7 @@
 <template>
-	<MainBanner></MainBanner>
+	<!-- <MainBanner></MainBanner> -->
 	<hr />
+
 	<MatchList></MatchList>
 	<hr />
 </template>

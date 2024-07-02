@@ -1,41 +1,92 @@
 <template>
-	<v-card class="mx-auto" max-width="700" min-width="300">
-		<ul class="no_dot">
-			<li v-for="matchInfo in matchInfoList" style="margin: 10px">
-				<div class="flex-container">
-					<div class="match-info-div-1">
-						<span>{{ matchInfo.matchTime }}</span>
-						<span
-							v-if="matchInfo.status === 'new'"
-							class="badge text-bg-secondary"
-							style="margin-left: 5px"
-							>{{ matchInfo.status }}</span
-						>
-					</div>
-					<div class="match-info-div-2" style="flex: 3">
-						<div class="pitch-name">
-							{{ matchInfo.pitchName }}
-						</div>
-						<div class="pitch-location">
-							{{ matchInfo.pitchLocation }}
-						</div>
-					</div>
-					<div class="match-info-div-3">
-						<div>
-							<button
-								class="match-join-button"
-								@click="goToMatchDetail(matchInfo.id)"
+	<v-container class="main-container">
+		<v-row>
+			<v-col cols="12">
+				<h1 class="text-center">Upcoming Football Matches</h1>
+			</v-col>
+		</v-row>
+		<v-row>
+			<v-col
+				v-for="(match, index) in matches"
+				:key="index"
+				cols="12"
+				md="6"
+				lg="3"
+			>
+				<v-card class="mx-auto my-2" max-width="400" min-width="300" outlined>
+					<v-card-title>
+						<div class="d-flex justify-space-between w-100">
+							<span class="font-weight-bold">{{ match.venue }}</span>
+							<v-chip
+								v-if="match.isNew"
+								class="ml-2"
+								color="green"
+								text-color="white"
+								label
 							>
-								Join
-							</button>
+								New
+							</v-chip>
 						</div>
-						<span class="participants" style="font-size: 15px">10/18</span>
+					</v-card-title>
+					<v-card-subtitle>
+						<div class="d-flex justify-space-between w-100">
+							<span>{{ match.time }}</span>
+							<span class="price">€{{ match.price }} </span>
+						</div>
+					</v-card-subtitle>
+					<v-card-text>
+						<div class="d-flex justify-space-between w-100 align-center">
+							<span>{{ match.spots }} spots available</span>
+							<v-btn
+								color="black"
+								class="book-now-btn"
+								dark
+								@click="bookMatch(match.id)"
+								>Book Now</v-btn
+							>
+						</div>
+					</v-card-text>
+				</v-card>
+			</v-col>
+		</v-row>
+	</v-container>
+	<!-- <v-card class="mx-auto my-4" max-width="800" min-width="300">
+			<ul class="no_dot">
+				<li v-for="matchInfo in matchInfoList" style="margin: 10px">
+					<div class="flex-container">
+						<div class="match-info-div-1">
+							<span>{{ matchInfo.matchTime }}</span>
+							<span
+								v-if="matchInfo.status === 'new'"
+								class="badge text-bg-secondary"
+								style="margin-left: 5px"
+								>{{ matchInfo.status }}</span
+							>
+						</div>
+						<div class="match-info-div-2" style="flex: 3">
+							<div class="pitch-name">
+								{{ matchInfo.pitchName }}
+							</div>
+							<div class="pitch-location">
+								{{ matchInfo.pitchLocation }}
+							</div>
+						</div>
+						<div class="match-info-div-3">
+							<div>
+								<button
+									class="match-join-button"
+									@click="goToMatchDetail(matchInfo.id)"
+								>
+									Join
+								</button>
+							</div>
+							<span class="participants" style="font-size: 15px">10/18</span>
+						</div>
 					</div>
-				</div>
-				<hr />
-			</li>
-		</ul>
-	</v-card>
+					<hr />
+				</li>
+			</ul>
+		</v-card> -->
 </template>
 
 <script>
@@ -46,46 +97,50 @@ export default {
 	setup() {
 		const router = useRouter();
 
-		const matchInfoList = [
+		const matches = [
 			{
-				id: '1001',
-				matchTime: '00:00',
-				pitchName: 'Alster Lake',
-				pitchLocation: 'BundesStrase 17',
-				status: 'new',
+				id: 1,
+				venue: 'Acme Sports Center',
+				time: 'Wed, Jun 28, 6:00 PM',
+				price: 20,
+				spots: 10,
+				isNew: true,
 			},
 			{
-				id: '1002',
-				matchTime: '02:00',
-				pitchName: 'StadtPark',
-				pitchLocation: 'BundesStrase 17',
-				status: '',
+				id: 2,
+				venue: 'Central Park Field',
+				time: 'Thu, Jun 29, 2:00 PM',
+				price: 25,
+				spots: 8,
+				isNew: false,
 			},
 			{
-				id: '1003',
-				matchTime: '04:00',
-				pitchName: 'Haupbanhof',
-				pitchLocation: 'BundesStrase 17',
-				status: 'new',
+				id: 3,
+				venue: 'Riverside Stadium',
+				time: 'Fri, Jun 30, 4:30 PM',
+				price: 18,
+				spots: 12,
+				isNew: true,
+			},
+			{
+				id: 4,
+				venue: 'Sunny Sports Complex',
+				time: 'Sat, Jul 1, 11:00 AM',
+				price: 22,
+				spots: 6,
+				isNew: false,
+			},
+			{
+				id: 5,
+				venue: 'Meadow Park',
+				time: 'Sun, Jul 2, 7:00 PM',
+				price: 15,
+				spots: 14,
+				isNew: false,
 			},
 		];
 
-		const matchDateList = [
-			{
-				data: 'June 23',
-				IsMatchExist: true,
-			},
-			{
-				data: 'June 24',
-				IsMatchExist: true,
-			},
-			{
-				data: 'June 25',
-				IsMatchExist: true,
-			},
-		];
-
-		const goToMatchDetail = id => {
+		const bookMatch = id => {
 			router.push({
 				name: 'TheMatchDetail',
 				params: {
@@ -93,53 +148,51 @@ export default {
 				},
 			});
 		};
-		return { matchInfoList, goToMatchDetail };
+		return { matches, bookMatch };
 	},
 };
 </script>
 
 <style scoped>
-.no_dot {
-	list-style-type: none;
-	padding-left: 0px;
-}
-.flex-container {
-	display: flex;
-	align-items: center;
-	margin: 10px;
-	flex-direction: row;
-}
-.flex-container > div {
-	width: 500px;
-	margin: 10px;
+.text-center {
 	text-align: center;
-	font-size: 20px;
+	font-family: 'Inter', sans-serif;
 }
-.match-info-div-1 {
-	flex: 1;
-	margin: 10px;
+.mx-auto {
+	margin-left: auto;
+	margin-right: auto;
 }
-.match-info-div-2 {
-	flex: 3;
+.my-2 {
+	margin-top: 8px;
+	margin-bottom: 8px;
 }
-.match-info-div-3 {
-	flex: 1;
+.w-100 {
+	width: 100%;
 }
-.match-info-div-2 .pitch-name {
+.font-weight-bold {
+	font-weight: bold;
+	font-family: 'Inter', sans-serif;
 }
-.match-info-div-2 .pitch-location {
-	font-size: 15px;
-	color: grey;
+.price {
+	font-size: 16px;
+	font-weight: bold;
+	color: black;
 }
-.match-join-button {
-	background-color: white;
-	font-size: 20px;
-	padding: 7px 25px;
-	border-radius: 4px;
-	border: 2px solid #04aa6d; /* Green */
+v-card-title,
+v-card-subtitle,
+v-card-text {
+	font-family: 'Inter', sans-serif;
 }
-.match-join-button:hover {
-	background-color: #04aa6d; /* Green */
-	color: white;
+.book-now-btn {
+	min-width: 100px;
+	min-height: 40px;
+	height: 40px;
+	background-color: black !important;
+}
+.main-container {
+	max-width: 1400px;
+	margin: 0 auto;
+	padding-left: 16px;
+	padding-right: 16px;
 }
 </style>
