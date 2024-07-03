@@ -1,56 +1,98 @@
 <template>
-	<MainBanner></MainBanner>
-	<hr />
+	<v-container class="main-container">
+		<!-- 상단 이미지 및 제목 -->
+		<v-row>
+			<v-col cols="12">
+				<v-img
+					src="https://via.placeholder.com/1200x400.png?text=Soccer+Match"
+					aspect-ratio="2.5"
+					class="mb-4"
+				>
+					<v-row class="fill-height">
+						<v-col
+							class="d-flex align-center justify-center"
+							cols="12"
+							style="background: rgba(0, 0, 0, 0.4)"
+						>
+							<div class="text-center text-white">
+								<h1 class="display-2 font-weight-bold">Soccer Match</h1>
+								<h2 class="subtitle-1">
+									Join us for an exciting soccer match!
+								</h2>
+							</div>
+						</v-col>
+					</v-row>
+				</v-img>
+			</v-col>
+		</v-row>
 
-	<!-- Pitch Detail -->
-	<div style="margin-left: 40px; margin-right: 40px">
-		<div class="pitch-info">
-			<div style="font-size: 30px; font-weight: bold; margin-bottom: 10px">
-				Pitch Info
-			</div>
-			<ul class="no_dot">
-				<li>📍 {{ pitchDetail.location }}</li>
-				<li>
-					🥅 <span>{{ pitchDetail.size }}</span>
-				</li>
-				<li>🚗 Parking</li>
-				<!-- <li>🚽 {{ pitchDetail.isToilet }}</li> -->
-				<li>🚿 Shower</li>
-			</ul>
-		</div>
-	</div>
+		<!-- 경기 상세 정보 -->
+		<v-row>
+			<!-- Match Details -->
+			<v-col cols="12" md="8">
+				<v-card class="pa-4">
+					<v-card-title class="headline font-weight-bold"
+						>Match Details</v-card-title
+					>
+					<v-card-text>
+						<v-row>
+							<v-col cols="6">
+								<v-icon class="mr-2">mdi-account-group</v-icon>12 players
+							</v-col>
+							<v-col cols="6">
+								<v-icon class="mr-2">mdi-football</v-icon>Intermediate
+							</v-col>
+							<v-col cols="6">
+								<v-icon class="mr-2">mdi-gender-male-female</v-icon>Co-ed
+							</v-col>
+						</v-row>
+					</v-card-text>
+				</v-card>
 
-	<hr />
-	<!-- Manager Detail -->
-	<div style="margin-left: 40px; margin-right: 40px">
-		<div class="">
-			<div style="font-size: 20px; font-weight: bold; margin-bottom: 10px">
-				Match's manager
-			</div>
-			<div class="manager-info">
-				<span>{{ managerDetail.name }}</span>
-				<span>{{ managerDetail.matchCount }} matches</span>
-			</div>
-		</div>
-	</div>
+				<!-- Venue Details -->
+				<v-card class="pa-4 mt-4">
+					<v-card-title class="headline font-weight-bold"
+						>Venue Details</v-card-title
+					>
+					<v-card-text>
+						<v-row>
+							<v-col cols="6">
+								<v-icon class="mr-2">mdi-seat</v-icon>2,500 capacity
+							</v-col>
+							<v-col cols="6">
+								<v-icon class="mr-2">mdi-map-marker</v-icon>123 Main St, Anytown
+								USA
+							</v-col>
+							<v-col cols="6">
+								<v-icon class="mr-2">mdi-shower</v-icon>Showers available
+							</v-col>
+							<v-col cols="6">
+								<v-icon class="mr-2">mdi-parking</v-icon>Free parking
+							</v-col>
+							<v-col cols="6">
+								<v-icon class="mr-2">mdi-cup</v-icon>Drinks sold
+							</v-col>
+						</v-row>
+					</v-card-text>
+				</v-card>
+			</v-col>
 
-	<hr />
-	<!-- Price Detail -->
-	<div style="margin-left: 40px; margin-right: 40px">
-		<div class="booking_bar">
-			<div>{{ matchDetail.date }}</div>
-			<div class="match-join-div-2">
-				<div class="pitch-name">
-					{{ matchDetail.name }}
-				</div>
-				<div class="pitch-location">
-					{{ matchDetail.location }}
-				</div>
-			</div>
-			<div><BookingDialog :matchDetail="matchDetail"></BookingDialog></div>
-			<!-- <div><button class="match-join-button">Join</button></div> -->
-		</div>
-	</div>
+			<!-- Join the Match -->
+			<v-col cols="12" md="4">
+				<v-card class="pa-4">
+					<v-card-title class="headline font-weight-bold"
+						>Join the Match</v-card-title
+					>
+					<v-card-text>
+						<p>Sign up now to secure your spot in the upcoming soccer match.</p>
+						<h3 class="price">$20</h3>
+						<p class="caption">Limited spots available, sign up today!</p>
+						<v-btn color="black" class="book-now-btn" dark>Sign Up</v-btn>
+					</v-card-text>
+				</v-card>
+			</v-col>
+		</v-row>
+	</v-container>
 </template>
 
 <script>
