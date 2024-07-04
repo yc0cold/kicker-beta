@@ -50,43 +50,6 @@
 			</v-col>
 		</v-row>
 	</v-container>
-	<!-- <v-card class="mx-auto my-4" max-width="800" min-width="300">
-			<ul class="no_dot">
-				<li v-for="matchInfo in matchInfoList" style="margin: 10px">
-					<div class="flex-container">
-						<div class="match-info-div-1">
-							<span>{{ matchInfo.matchTime }}</span>
-							<span
-								v-if="matchInfo.status === 'new'"
-								class="badge text-bg-secondary"
-								style="margin-left: 5px"
-								>{{ matchInfo.status }}</span
-							>
-						</div>
-						<div class="match-info-div-2" style="flex: 3">
-							<div class="pitch-name">
-								{{ matchInfo.pitchName }}
-							</div>
-							<div class="pitch-location">
-								{{ matchInfo.pitchLocation }}
-							</div>
-						</div>
-						<div class="match-info-div-3">
-							<div>
-								<button
-									class="match-join-button"
-									@click="goToMatchDetail(matchInfo.id)"
-								>
-									Join
-								</button>
-							</div>
-							<span class="participants" style="font-size: 15px">10/18</span>
-						</div>
-					</div>
-					<hr />
-				</li>
-			</ul>
-		</v-card> -->
 </template>
 
 <script>
@@ -192,6 +155,7 @@ v-card-text {
 .main-container {
 	max-width: 1400px;
 	margin: 0 auto;
+	/* margin-top: 30px; */
 	padding-left: 16px;
 	padding-right: 16px;
 }

@@ -1,107 +1,133 @@
 <template>
-	<v-container class="main-container">
-		<!-- 상단 이미지 및 제목 -->
-		<v-row>
-			<v-col cols="12">
-				<v-img
-					src="https://via.placeholder.com/1200x400.png?text=Soccer+Match"
-					aspect-ratio="2.5"
-					class="mb-4"
-				>
-					<v-row class="fill-height">
-						<v-col
-							class="d-flex align-center justify-center"
-							cols="12"
-							style="background: rgba(0, 0, 0, 0.4)"
+	<div>
+		<v-container class="main-container">
+			<!-- 상단 이미지 및 제목 -->
+			<v-row>
+				<v-col cols="12">
+					<v-img
+						src="https://via.placeholder.com/1200x400.png?text=Soccer+Match"
+						aspect-ratio="2.5"
+						class="mb-4"
+					>
+						<v-row class="fill-height">
+							<v-col
+								class="d-flex align-center justify-center"
+								cols="12"
+								style="background: rgba(0, 0, 0, 0.4)"
+							>
+								<div class="text-center text-white">
+									<h1 class="display-2 font-weight-bold">Soccer Match</h1>
+									<h2 class="subtitle-1">
+										Join us for an exciting soccer match!
+									</h2>
+								</div>
+							</v-col>
+						</v-row>
+					</v-img>
+				</v-col>
+			</v-row>
+
+			<!-- 경기 상세 정보 -->
+			<v-row>
+				<!-- Match Details -->
+				<v-col cols="12" md="8">
+					<v-card class="pa-4">
+						<v-card-title class="headline font-weight-bold"
+							>Match Details</v-card-title
 						>
-							<div class="text-center text-white">
-								<h1 class="display-2 font-weight-bold">Soccer Match</h1>
-								<h2 class="subtitle-1">
-									Join us for an exciting soccer match!
-								</h2>
-							</div>
-						</v-col>
-					</v-row>
-				</v-img>
-			</v-col>
-		</v-row>
+						<v-card-text>
+							<v-row>
+								<v-col cols="6">
+									<v-icon class="mr-2">mdi-account-group</v-icon>12 players
+								</v-col>
+								<v-col cols="6">
+									<v-icon class="mr-2">mdi-soccer</v-icon>Intermediate
+								</v-col>
+								<v-col cols="6">
+									<v-icon class="mr-2">mdi-gender-male-female</v-icon>Co-ed
+								</v-col>
+							</v-row>
+						</v-card-text>
+					</v-card>
 
-		<!-- 경기 상세 정보 -->
-		<v-row>
-			<!-- Match Details -->
-			<v-col cols="12" md="8">
-				<v-card class="pa-4">
-					<v-card-title class="headline font-weight-bold"
-						>Match Details</v-card-title
-					>
-					<v-card-text>
-						<v-row>
-							<v-col cols="6">
-								<v-icon class="mr-2">mdi-account-group</v-icon>12 players
-							</v-col>
-							<v-col cols="6">
-								<v-icon class="mr-2">mdi-football</v-icon>Intermediate
-							</v-col>
-							<v-col cols="6">
-								<v-icon class="mr-2">mdi-gender-male-female</v-icon>Co-ed
-							</v-col>
-						</v-row>
-					</v-card-text>
-				</v-card>
+					<!-- Venue Details -->
+					<v-card class="pa-4 mt-4">
+						<v-card-title class="headline font-weight-bold"
+							>Venue Details</v-card-title
+						>
+						<v-card-text>
+							<v-row>
+								<v-col cols="6">
+									<v-icon class="mr-2">mdi-seat</v-icon>2,500 capacity
+								</v-col>
+								<v-col cols="6">
+									<v-icon class="mr-2">mdi-map-marker</v-icon>123 Main St,
+									Anytown USA
+								</v-col>
+								<v-col cols="6">
+									<v-icon class="mr-2">mdi-shower</v-icon>Showers available
+								</v-col>
+								<v-col cols="6">
+									<v-icon class="mr-2">mdi-parking</v-icon>Free parking
+								</v-col>
+								<v-col cols="6">
+									<v-icon class="mr-2">mdi-cup</v-icon>Drinks sold
+								</v-col>
+							</v-row>
+						</v-card-text>
+					</v-card>
+				</v-col>
 
-				<!-- Venue Details -->
-				<v-card class="pa-4 mt-4">
-					<v-card-title class="headline font-weight-bold"
-						>Venue Details</v-card-title
-					>
-					<v-card-text>
-						<v-row>
-							<v-col cols="6">
-								<v-icon class="mr-2">mdi-seat</v-icon>2,500 capacity
-							</v-col>
-							<v-col cols="6">
-								<v-icon class="mr-2">mdi-map-marker</v-icon>123 Main St, Anytown
-								USA
-							</v-col>
-							<v-col cols="6">
-								<v-icon class="mr-2">mdi-shower</v-icon>Showers available
-							</v-col>
-							<v-col cols="6">
-								<v-icon class="mr-2">mdi-parking</v-icon>Free parking
-							</v-col>
-							<v-col cols="6">
-								<v-icon class="mr-2">mdi-cup</v-icon>Drinks sold
-							</v-col>
-						</v-row>
-					</v-card-text>
-				</v-card>
-			</v-col>
-
-			<!-- Join the Match -->
-			<v-col cols="12" md="4">
-				<v-card class="pa-4">
-					<v-card-title class="headline font-weight-bold"
-						>Join the Match</v-card-title
-					>
-					<v-card-text>
-						<p>Sign up now to secure your spot in the upcoming soccer match.</p>
-						<h3 class="price">$20</h3>
-						<p class="caption">Limited spots available, sign up today!</p>
-						<v-btn color="black" class="book-now-btn" dark>Sign Up</v-btn>
-					</v-card-text>
-				</v-card>
-			</v-col>
-		</v-row>
-	</v-container>
+				<!-- Join the Match -->
+				<v-col v-if="!isMobile" cols="12" md="4" class="d-none d-md-block">
+					<v-card class="pa-4">
+						<v-card-title class="headline font-weight-bold"
+							>Join the Match</v-card-title
+						>
+						<v-card-text>
+							<p>
+								Sign up now to secure your spot in the upcoming soccer match.
+							</p>
+							<h3 class="price">$20</h3>
+							<p class="caption">Limited spots available, sign up today!</p>
+							<v-btn color="black" class="book-now-btn" dark>Sign Up</v-btn>
+						</v-card-text>
+					</v-card>
+				</v-col>
+			</v-row>
+		</v-container>
+		<!-- Bottom Navigation for Mobile -->
+		<div v-if="isMobile" class="mobile-bottom-bar">
+			<div class="mobile-bottom-bar-content">
+				<span class="font-weight-bold">Secure your spot now!</span>
+				<v-btn color="black" class="book-now-btn" dark>Sign Up</v-btn>
+			</div>
+		</div>
+	</div>
 </template>
 
 <script>
-import { reactive, ref } from 'vue';
+import { reactive, ref, onMounted, onBeforeUnmount } from 'vue';
 import MainBanner from '@/components/MainBanner.vue';
 import BookingDialog from '@/components/BookingDialog.vue';
 export default {
 	components: { MainBanner, BookingDialog },
 	setup() {
+		const isMobile = ref(false);
+
+		const checkIfMobile = () => {
+			isMobile.value = window.innerWidth <= 960; // Vuetify's breakpoint for smAndDown
+		};
+
+		onMounted(() => {
+			checkIfMobile();
+			window.addEventListener('resize', checkIfMobile);
+		});
+
+		onBeforeUnmount(() => {
+			window.removeEventListener('resize', checkIfMobile);
+		});
+
 		const matchDetail = reactive({
 			id: 1001,
 			name: 'Wandsbek', // pitch name
@@ -130,7 +156,7 @@ export default {
 			matchCount: 5,
 			rating: 5,
 		});
-		return { matchDetail, pitchDetail, managerDetail };
+		return { isMobile, matchDetail, pitchDetail, managerDetail };
 	},
 };
 </script>
@@ -166,12 +192,6 @@ export default {
 	font-size: 20px;
 	text-align: center;
 }
-.match-join-div-1 {
-}
-.match-join-div-2 {
-}
-.match-join-div-2 .pitch-name {
-}
 .match-join-div-2 .pitch-location {
 	font-size: 15px;
 	color: grey;
@@ -186,5 +206,43 @@ export default {
 .match-join-button:hover {
 	background-color: #04aa6d; /* Green */
 	color: white;
+}
+/* 
+@media (min-width: 961px) {
+	.mobile-bottom-bar {
+		display: none;
+	}
+}
+@media (max-width: 960px) {
+	.desktop-join-card {
+		display: none;
+	}
+} */
+.mobile-bottom-bar {
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	background-color: white;
+	padding: 10px;
+	box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+	z-index: 1000;
+	display: flex;
+	justify-content: center;
+}
+
+.mobile-bottom-bar-content {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	width: 90%;
+	max-width: 1000px;
+}
+
+.book-now-btn {
+	min-width: 100px;
+	min-height: 40px;
+	height: 40px;
+	background-color: black !important;
 }
 </style>

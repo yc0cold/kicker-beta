@@ -1,5 +1,28 @@
 <template>
-	<v-app-bar :elevation="2">
+	<!-- 상단 네비게이션 바 -->
+	<v-app-bar app>
+		<v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
+		<v-toolbar-title class="d-flex align-center" @click="goToMain">
+			<span>Kicker</span>
+			<span class="beta-text ml-2">beta</span>
+		</v-toolbar-title>
+		<v-spacer></v-spacer>
+		<v-btn icon @click="goToLogin">
+			<v-icon>mdi-login</v-icon>
+		</v-btn>
+	</v-app-bar>
+
+	<!-- 네비게이션 드로어 -->
+	<v-navigation-drawer v-model="drawer" app temporary>
+		<v-list>
+			<v-list-item v-for="(item, index) in items" :key="index">
+				<v-list-item-content>
+					<v-list-item-title>{{ item.title }}</v-list-item-title>
+				</v-list-item-content>
+			</v-list-item>
+		</v-list>
+	</v-navigation-drawer>
+	<!-- <v-app-bar :elevation="2">
 		<template v-slot:prepend>
 			<v-app-bar-nav-icon></v-app-bar-nav-icon>
 		</template>
@@ -9,11 +32,7 @@
 			<button class="nav-menu" @click="goToMain">Home</button>
 			<button @click="goToUserGuide" class="nav-menu">
 				User Guide
-				<!-- <a href="{{ userGuideUrl }}">User Guide</a> -->
 			</button>
-			<!-- <div class="nav-menu">
-				<v-switch label="Switch"></v-switch>
-			</div> -->
 			<button @click="logout">Log out</button>
 
 			<div v-if="isAuthenticated">
@@ -27,16 +46,26 @@
 				<v-btn variant="flat" color="indigo" @click="goToLogin">Login</v-btn>
 			</div>
 		</div>
-	</v-app-bar>
+	</v-app-bar> -->
 </template>
 
 <script>
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '../stores/auth';
-import { reactive, computed } from 'vue';
+import { ref, reactive, computed } from 'vue';
 
 export default {
 	setup() {
+		const isMobile = ref(false);
+		const drawer = ref(false);
+
+		const items = [
+			{ title: 'Home' },
+			{ title: 'Matches' },
+			{ title: 'Teams' },
+			{ title: 'Contact' },
+		];
+
 		const authStore = useAuthStore();
 		const { user } = authStore;
 
@@ -66,6 +95,8 @@ export default {
 
 		console.log('Nav: isAuthenticated: ', isAuthenticated);
 		return {
+			drawer,
+			items,
 			goToMain,
 			goToUserGuide,
 			goToLogin,
@@ -84,5 +115,18 @@ export default {
 .nav-menu {
 	margin: 5px;
 	width: 200px;
+}
+
+.book-now-btn {
+	min-width: 100px;
+	min-height: 40px;
+	height: 40px;
+	background-color: black !important;
+}
+
+.beta-text {
+	color: grey;
+	font-size: 14px;
+	margin-left: 8px;
 }
 </style>

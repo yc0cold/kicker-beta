@@ -2,11 +2,9 @@
 	<!-- <TheNav></TheNav> -->
 	<v-app>
 		<TheNav></TheNav>
-
-		<hr />
-		<!-- <TheMain></TheMain> -->
-		<router-view></router-view>
-		<!-- <TheMatchDetail></TheMatchDetail> -->
+		<v-container class="mt-5">
+			<router-view></router-view>
+		</v-container>
 		<TheFooter></TheFooter>
 	</v-app>
 </template>
@@ -30,4 +28,8 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped>
+.mt-5 {
+	margin-top: 32px; /* Adjust the value as needed */
+}
+</style>
