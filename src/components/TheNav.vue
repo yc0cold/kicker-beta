@@ -7,9 +7,36 @@
 			<span class="beta-text ml-2">beta</span>
 		</v-toolbar-title>
 		<v-spacer></v-spacer>
-		<v-btn icon @click="goToLogin">
+		<v-btn v-if="!isAuthenticated" icon @click="goToLogin">
 			<v-icon>mdi-login</v-icon>
 		</v-btn>
+		<!-- <v-btn v-if="isAuthenticated" icon @click="">
+			<v-icon>mdi-account</v-icon>
+		</v-btn> -->
+		<v-menu
+			v-if="isAuthenticated"
+			v-model="menu"
+			:close-on-content-click="false"
+			location="bottom"
+			offset-y
+		>
+			<template v-slot:activator="{ props }">
+				<v-btn icon v-bind="props">
+					<v-icon>mdi-account</v-icon>
+				</v-btn>
+			</template>
+			<v-list>
+				<v-list-item @click="goToProfile">
+					<v-list-item-title>My Account</v-list-item-title>
+				</v-list-item>
+				<v-list-item @click="goToBookings">
+					<v-list-item-title>Reservation</v-list-item-title>
+				</v-list-item>
+				<v-list-item @click="logout">
+					<v-list-item-title>Log Out</v-list-item-title>
+				</v-list-item>
+			</v-list>
+		</v-menu>
 	</v-app-bar>
 
 	<!-- 네비게이션 드로어 -->
@@ -22,31 +49,6 @@
 			</v-list-item>
 		</v-list>
 	</v-navigation-drawer>
-	<!-- <v-app-bar :elevation="2">
-		<template v-slot:prepend>
-			<v-app-bar-nav-icon></v-app-bar-nav-icon>
-		</template>
-
-		<v-app-bar-title>Kicker-beta</v-app-bar-title>
-		<div class="flex-container">
-			<button class="nav-menu" @click="goToMain">Home</button>
-			<button @click="goToUserGuide" class="nav-menu">
-				User Guide
-			</button>
-			<button @click="logout">Log out</button>
-
-			<div v-if="isAuthenticated">
-				<button>
-					<v-avatar color="info">
-						<v-icon icon="mdi-account-circle"> </v-icon>
-					</v-avatar>
-				</button>
-			</div>
-			<div v-else>
-				<v-btn variant="flat" color="indigo" @click="goToLogin">Login</v-btn>
-			</div>
-		</div>
-	</v-app-bar> -->
 </template>
 
 <script>
@@ -66,6 +68,28 @@ export default {
 			{ title: 'Contact' },
 		];
 
+		const menu = ref(false);
+
+		const goToProfile = () => {
+			// 내정보 페이지로 이동하는 로직
+			console.log('내정보 페이지로 이동');
+		};
+
+		const goToBookings = () => {
+			// 예약현황 페이지로 이동하는 로직
+			console.log('예약현황 페이지로 이동');
+		};
+
+		const logout = () => {
+			authStore.logout();
+			console.log(
+				'logout!! & authStore.isAuthenticated',
+				authStore.isAuthenticated,
+			);
+			menu.value = !menu.value;
+			router.push({ name: 'TheMain' });
+		};
+
 		const authStore = useAuthStore();
 		const { user } = authStore;
 
@@ -84,15 +108,6 @@ export default {
 			router.push({ name: 'Login' });
 		};
 
-		const logout = () => {
-			authStore.logout();
-			console.log(
-				'logout!! & authStore.isAuthenticated',
-				authStore.isAuthenticated,
-			);
-			router.push({ name: 'TheMain' });
-		};
-
 		console.log('Nav: isAuthenticated: ', isAuthenticated);
 		return {
 			drawer,
@@ -100,6 +115,9 @@ export default {
 			goToMain,
 			goToUserGuide,
 			goToLogin,
+			goToProfile,
+			goToBookings,
+			menu,
 			user,
 			isAuthenticated,
 			logout,
