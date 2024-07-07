@@ -1,7 +1,5 @@
 <template>
 	<!-- <MainBanner></MainBanner> -->
-	<hr />
-
 	<MatchList></MatchList>
 	<hr />
 </template>

@@ -5,6 +5,34 @@
 				<h1 class="text-center">Upcoming Football Matches</h1>
 			</v-col>
 		</v-row>
+		<v-row class="align-center">
+			<v-col cols="1" class="text-center">
+				<v-btn icon @click="prevDate">
+					<v-icon>mdi-chevron-left</v-icon>
+				</v-btn>
+			</v-col>
+			<v-col cols="10" class="text-center">
+				<v-row class="no-gutters justify-center">
+					<v-col v-for="(date, index) in displayDates" :key="index" cols="auto">
+						<v-btn
+							:class="{ 'selected-date': date === selectedDate }"
+							@click="selectDate(date)"
+						>
+							<div class="date-btn">
+								<div>{{ formatMonth(date) }}</div>
+								<!-- {{ formatCalender(date) }} -->
+								<div>{{ formatDay(date) }}</div>
+							</div>
+						</v-btn>
+					</v-col>
+				</v-row>
+			</v-col>
+			<v-col cols="1" class="text-center">
+				<v-btn icon @click="nextDate">
+					<v-icon>mdi-chevron-right</v-icon>
+				</v-btn>
+			</v-col>
+		</v-row>
 		<v-row>
 			<v-col
 				v-for="(match, index) in matches"
@@ -16,7 +44,7 @@
 				<v-card class="mx-auto my-2" max-width="400" min-width="300" outlined>
 					<v-card-title>
 						<div class="d-flex justify-space-between w-100">
-							<span class="font-weight-bold">{{ match.venue }}</span>
+							<span class="font-weight-bold">{{ match.name }}</span>
 							<v-chip
 								v-if="match.isNew"
 								class="ml-2"
@@ -30,7 +58,7 @@
 					</v-card-title>
 					<v-card-subtitle>
 						<div class="d-flex justify-space-between w-100">
-							<span>{{ match.time }}</span>
+							<span>{{ formatDate(match.date) }}</span>
 							<span class="price">€{{ match.price }} </span>
 						</div>
 					</v-card-subtitle>
@@ -55,12 +83,13 @@
 <script>
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
+import axios from 'axios';
 
 export default {
 	setup() {
 		const router = useRouter();
 
-		const matches = [
+		const matches = ref([
 			{
 				id: 1,
 				venue: 'Acme Sports Center',
@@ -101,8 +130,128 @@ export default {
 				spots: 14,
 				isNew: false,
 			},
-		];
+		]);
 
+		const dates = ref([
+			'All',
+			'20240901',
+			'20240902',
+			'20240903',
+			'20240904',
+			'20240905',
+			'20240906',
+		]);
+		const selectedDate = ref(dates.value[0]);
+		const displayDates = ref(dates.value.slice(0, 4));
+
+		// const formatCalender = date => {
+		// 	if (date.length != 8) {
+		// 		return date;
+		// 	}
+		// 	const options = { month: 'short', day: 'numeric' };
+		// 	return new Date(
+		// 		date.slice(0, 4),
+		// 		date.slice(4, 6) - 1,
+		// 		date.slice(6, 8),
+		// 	).toLocaleDateString('en-GB', options);
+		// };
+		const formatMonth = date => {
+			if (!date || date.length !== 8) {
+				return date;
+			}
+			const monthNames = [
+				'Jan',
+				'Feb',
+				'Mar',
+				'Apr',
+				'May',
+				'Jun',
+				'Jul',
+				'Aug',
+				'Sep',
+				'Oct',
+				'Nov',
+				'Dec',
+			];
+			const month = parseInt(date.slice(4, 6), 10) - 1; // 월은 0부터 시작
+			return monthNames[month];
+		};
+
+		const formatDay = date => {
+			if (!date || date.length !== 8) {
+				return '';
+			}
+			return date.slice(6, 8);
+		};
+
+		const formatDate = date => {
+			if (!date) {
+				return '';
+			}
+			const year = date.slice(0, 4);
+			const month = date.slice(4, 6) - 1; // 월은 0부터 시작
+			const day = date.slice(6, 8);
+			const hour = date.slice(8, 10);
+
+			const formattedDate = new Date(year, month, day, hour);
+			const options = {
+				weekday: 'short',
+				day: '2-digit',
+				month: 'short',
+				hour: '2-digit',
+				minute: '2-digit',
+				hour12: true,
+			};
+
+			return formattedDate.toLocaleDateString('en-US', options);
+		};
+
+		const selectDate = async date => {
+			selectedDate.value = date;
+			console.log('selectDate: ', date);
+			const result = await getMatches(date);
+			console.log('Matches for selected date: ', result);
+			matches.value = result.data;
+		};
+
+		const prevDate = () => {
+			const index = dates.value.indexOf(selectedDate.value) - 3;
+			if (index > 0) {
+				selectedDate.value = dates.value[index - 1];
+				updateDisplayDates();
+			}
+		};
+
+		const nextDate = () => {
+			const index = dates.value.indexOf(selectedDate.value) + 3;
+			if (index < dates.value.length - 1) {
+				selectedDate.value = dates.value[index + 1];
+				updateDisplayDates();
+			}
+		};
+
+		const updateDisplayDates = () => {
+			const index = dates.value.indexOf(selectedDate.value);
+			displayDates.value = dates.value.slice(index, index + 4);
+		};
+
+		const getMatches = async date => {
+			try {
+				const response = await axios.get('/api/getMatches', {
+					params: {
+						date: date,
+					},
+				});
+				console.log('getMatches response: ', response);
+
+				return response;
+				//const result = response.data.length ? response.data[0] : null;
+				//console.log('getMatches result: ', result);
+			} catch (error) {
+				console.error('There was a problem with the axios request:', error);
+			}
+		};
+		//getMatches();
 		const bookMatch = id => {
 			router.push({
 				name: 'TheMatchDetail',
@@ -111,12 +260,31 @@ export default {
 				},
 			});
 		};
-		return { matches, bookMatch };
+		return {
+			matches,
+			bookMatch,
+			dates,
+			selectedDate,
+			displayDates,
+			formatMonth,
+			formatDay,
+			formatDate,
+			selectDate,
+			prevDate,
+			nextDate,
+			getMatches,
+		};
 	},
 };
 </script>
 
 <style scoped>
+.date-btn {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+}
 .text-center {
 	text-align: center;
 	font-family: 'Inter', sans-serif;
@@ -158,5 +326,8 @@ v-card-text {
 	/* margin-top: 30px; */
 	padding-left: 16px;
 	padding-right: 16px;
+}
+.selected-date {
+	font-weight: bold;
 }
 </style>
