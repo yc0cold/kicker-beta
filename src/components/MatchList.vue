@@ -19,9 +19,9 @@
 							@click="selectDate(date)"
 						>
 							<div class="date-btn">
-								<div>{{ formatMonth(date) }}</div>
-								<!-- {{ formatCalender(date) }} -->
+								<!-- <div>{{ formatMonth(date) }}</div> -->
 								<div>{{ formatDay(date) }}</div>
+								<div>{{ formatWeekDay(date) }}</div>
 							</div>
 						</v-btn>
 					</v-col>
@@ -179,9 +179,29 @@ export default {
 
 		const formatDay = date => {
 			if (!date || date.length !== 8) {
-				return '';
+				return date;
 			}
 			return date.slice(6, 8);
+		};
+
+		const formatWeekDay = dateString => {
+			if (!dateString || dateString.length !== 8) {
+				return '';
+			}
+			const year = dateString.slice(0, 4);
+			const month = dateString.slice(4, 6) - 1; // 월은 0부터 시작
+			const day = dateString.slice(6, 8);
+
+			const date = new Date(year, month, day);
+
+			// 요일 이름 배열
+			const weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat'];
+
+			// Date 객체의 getDay() 메서드로 요일 인덱스 가져오기
+			const weekdayIndex = date.getDay();
+
+			// 요일 이름 반환
+			return weekdays[weekdayIndex];
 		};
 
 		const formatDate = date => {
@@ -215,24 +235,36 @@ export default {
 		};
 
 		const prevDate = () => {
-			const index = dates.value.indexOf(selectedDate.value) - 3;
-			if (index > 0) {
-				selectedDate.value = dates.value[index - 1];
-				updateDisplayDates();
+			const index = dates.value.indexOf(selectedDate.value) - 1;
+			if (index < 0) {
+				return;
 			}
+			if (selectedDate.value == displayDates.value[0]) {
+				displayDates.value = dates.value.slice(
+					index,
+					index + displayDates.value.length,
+				);
+			}
+
+			selectedDate.value = dates.value[index];
+			selectDate(selectedDate.value);
 		};
 
 		const nextDate = () => {
-			const index = dates.value.indexOf(selectedDate.value) + 3;
-			if (index < dates.value.length - 1) {
-				selectedDate.value = dates.value[index + 1];
-				updateDisplayDates();
+			const index = dates.value.indexOf(selectedDate.value) + 1;
+			if (index > dates.value.length - 1) {
+				return;
 			}
-		};
-
-		const updateDisplayDates = () => {
-			const index = dates.value.indexOf(selectedDate.value);
-			displayDates.value = dates.value.slice(index, index + 4);
+			if (
+				selectedDate.value == displayDates.value[displayDates.value.length - 1]
+			) {
+				displayDates.value = dates.value.slice(
+					index - displayDates.value.length + 1,
+					index + 1,
+				);
+			}
+			selectedDate.value = dates.value[index];
+			selectDate(selectedDate.value);
 		};
 
 		const getMatches = async date => {
@@ -245,8 +277,6 @@ export default {
 				console.log('getMatches response: ', response);
 
 				return response;
-				//const result = response.data.length ? response.data[0] : null;
-				//console.log('getMatches result: ', result);
 			} catch (error) {
 				console.error('There was a problem with the axios request:', error);
 			}
@@ -268,6 +298,7 @@ export default {
 			displayDates,
 			formatMonth,
 			formatDay,
+			formatWeekDay,
 			formatDate,
 			selectDate,
 			prevDate,
