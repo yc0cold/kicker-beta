@@ -38,7 +38,8 @@
 						<v-card-text>
 							<v-row>
 								<v-col cols="6">
-									<v-icon class="mr-2">mdi-account-group</v-icon>12 players
+									<v-icon class="mr-2">mdi-account-group</v-icon
+									>{{ match.max_players }} players
 								</v-col>
 								<v-col cols="6">
 									<v-icon class="mr-2">mdi-soccer</v-icon>Intermediate
@@ -110,9 +111,29 @@
 import { reactive, ref, onMounted, onBeforeUnmount } from 'vue';
 import MainBanner from '@/components/MainBanner.vue';
 import BookingDialog from '@/components/BookingDialog.vue';
+import { useRoute } from 'vue-router';
+import axios from 'axios';
+
 export default {
 	components: { MainBanner, BookingDialog },
 	setup() {
+		const route = useRoute();
+		const match = ref(null);
+		const matchId = route.params.id;
+
+		const getMatch = async id => {
+			try {
+				const response = await axios.get(`/api/getMatchDetail`, {
+					params: {
+						id: id,
+					},
+				});
+				match.value = response.data;
+			} catch (error) {
+				console.error('Error fetching match data:', error);
+			}
+		};
+
 		const isMobile = ref(false);
 
 		const checkIfMobile = () => {
@@ -122,6 +143,10 @@ export default {
 		onMounted(() => {
 			checkIfMobile();
 			window.addEventListener('resize', checkIfMobile);
+
+			if (matchId) {
+				getMatch(matchId);
+			}
 		});
 
 		onBeforeUnmount(() => {
@@ -156,7 +181,7 @@ export default {
 			matchCount: 5,
 			rating: 5,
 		});
-		return { isMobile, matchDetail, pitchDetail, managerDetail };
+		return { match, isMobile, matchDetail, pitchDetail, managerDetail };
 	},
 };
 </script>

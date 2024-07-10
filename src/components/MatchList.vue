@@ -59,7 +59,9 @@
 					<v-card-subtitle>
 						<div class="d-flex justify-space-between w-100">
 							<span>{{ formatDate(match.date) }}</span>
-							<span class="price">€{{ match.price }} </span>
+							<span class="price"
+								>€{{ match.price.toString().replace('.', ',') }}
+							</span>
 						</div>
 					</v-card-subtitle>
 					<v-card-text>
@@ -81,7 +83,7 @@
 </template>
 
 <script>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import axios from 'axios';
 
@@ -89,51 +91,9 @@ export default {
 	setup() {
 		const router = useRouter();
 
-		const matches = ref([
-			{
-				id: 1,
-				venue: 'Acme Sports Center',
-				time: 'Wed, Jun 28, 6:00 PM',
-				price: 20,
-				spots: 10,
-				isNew: true,
-			},
-			{
-				id: 2,
-				venue: 'Central Park Field',
-				time: 'Thu, Jun 29, 2:00 PM',
-				price: 25,
-				spots: 8,
-				isNew: false,
-			},
-			{
-				id: 3,
-				venue: 'Riverside Stadium',
-				time: 'Fri, Jun 30, 4:30 PM',
-				price: 18,
-				spots: 12,
-				isNew: true,
-			},
-			{
-				id: 4,
-				venue: 'Sunny Sports Complex',
-				time: 'Sat, Jul 1, 11:00 AM',
-				price: 22,
-				spots: 6,
-				isNew: false,
-			},
-			{
-				id: 5,
-				venue: 'Meadow Park',
-				time: 'Sun, Jul 2, 7:00 PM',
-				price: 15,
-				spots: 14,
-				isNew: false,
-			},
-		]);
+		const matches = ref([]);
 
 		const dates = ref([
-			'All',
 			'20240901',
 			'20240902',
 			'20240903',
@@ -144,17 +104,6 @@ export default {
 		const selectedDate = ref(dates.value[0]);
 		const displayDates = ref(dates.value.slice(0, 4));
 
-		// const formatCalender = date => {
-		// 	if (date.length != 8) {
-		// 		return date;
-		// 	}
-		// 	const options = { month: 'short', day: 'numeric' };
-		// 	return new Date(
-		// 		date.slice(0, 4),
-		// 		date.slice(4, 6) - 1,
-		// 		date.slice(6, 8),
-		// 	).toLocaleDateString('en-GB', options);
-		// };
 		const formatMonth = date => {
 			if (!date || date.length !== 8) {
 				return date;
@@ -195,7 +144,7 @@ export default {
 			const date = new Date(year, month, day);
 
 			// 요일 이름 배열
-			const weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat'];
+			const weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
 			// Date 객체의 getDay() 메서드로 요일 인덱스 가져오기
 			const weekdayIndex = date.getDay();
@@ -290,6 +239,11 @@ export default {
 				},
 			});
 		};
+
+		onMounted(() => {
+			selectDate('20240901'); // 페이지 로드 시 처음으로 호출
+		});
+
 		return {
 			matches,
 			bookMatch,
