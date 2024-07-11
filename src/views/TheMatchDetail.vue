@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<v-container class="main-container">
+		<v-container v-if="match" class="main-container">
 			<!-- 상단 이미지 및 제목 -->
 			<v-row>
 				<v-col cols="12">
@@ -39,13 +39,20 @@
 							<v-row>
 								<v-col cols="6">
 									<v-icon class="mr-2">mdi-account-group</v-icon
-									>{{ match.max_players }} players
+									>{{ match.maxPlayers }} players
 								</v-col>
 								<v-col cols="6">
-									<v-icon class="mr-2">mdi-soccer</v-icon>Intermediate
+									<v-icon class="mr-2">mdi-soccer</v-icon>All level
 								</v-col>
 								<v-col cols="6">
-									<v-icon class="mr-2">mdi-gender-male-female</v-icon>Co-ed
+									<v-icon class="mr-2">mdi-gender-male-female</v-icon
+									>{{
+										match.sex == 'M'
+											? 'Men Only'
+											: match.sex == 'F'
+												? 'Women Only'
+												: 'Co-ed'
+									}}
 								</v-col>
 							</v-row>
 						</v-card-text>
@@ -59,21 +66,52 @@
 						<v-card-text>
 							<v-row>
 								<v-col cols="6">
-									<v-icon class="mr-2">mdi-seat</v-icon>2,500 capacity
+									<v-icon class="mr-2">mdi-seat</v-icon
+									>{{ match.capacity }} capacity
 								</v-col>
 								<v-col cols="6">
-									<v-icon class="mr-2">mdi-map-marker</v-icon>123 Main St,
-									Anytown USA
+									<v-icon class="mr-2">mdi-map-marker</v-icon
+									>{{ match.addressRoad }}
 								</v-col>
 								<v-col cols="6">
-									<v-icon class="mr-2">mdi-shower</v-icon>Showers available
+									<v-icon class="mr-2">mdi-shower</v-icon>Showers
+									{{ match.showerRoomYn == 'Y' ? 'available' : 'unavailable' }}
 								</v-col>
 								<v-col cols="6">
-									<v-icon class="mr-2">mdi-parking</v-icon>Free parking
+									<v-icon class="mr-2">mdi-parking</v-icon>Parking
+									{{ match.parkingLotYn == 'Y' ? 'available' : 'unavailable' }}
 								</v-col>
 								<v-col cols="6">
-									<v-icon class="mr-2">mdi-cup</v-icon>Drinks sold
+									<v-icon class="mr-2">mdi-cup</v-icon>Drinks
+									{{ match.drinkSoldYn == 'Y' ? 'sold' : 'unsold' }}
 								</v-col>
+							</v-row>
+						</v-card-text>
+					</v-card>
+
+					<!-- Manager Details -->
+					<v-card class="pa-4 mt-4">
+						<v-card-title class="headline font-weight-bold"
+							>Manager Details</v-card-title
+						>
+						<v-card-text>
+							<v-row>
+								<v-col cols="1">
+									<v-avatar size="40">
+										<v-img :src="manager.photo || 'default-avatar.png'"></v-img>
+									</v-avatar>
+								</v-col>
+								<v-col cols="9">
+									<div class="manager-name">{{ manager.name }}</div>
+									<div class="manager-match-count">
+										{{ manager.matchCount }} matches played
+									</div>
+								</v-col>
+							</v-row>
+							<v-row>
+								<v-col cols="10"
+									><div class="manager-bio">„ {{ manager.bio }} “</div></v-col
+								>
 							</v-row>
 						</v-card-text>
 					</v-card>
@@ -89,7 +127,9 @@
 							<p>
 								Sign up now to secure your spot in the upcoming soccer match.
 							</p>
-							<h3 class="price">$20</h3>
+							<h3 class="price">
+								€{{ match.price.toString().replace('.', ',') }}
+							</h3>
 							<p class="caption">Limited spots available, sign up today!</p>
 							<v-btn color="black" class="book-now-btn" dark>Sign Up</v-btn>
 						</v-card-text>
@@ -117,9 +157,9 @@ import axios from 'axios';
 export default {
 	components: { MainBanner, BookingDialog },
 	setup() {
-		const route = useRoute();
+		const router = useRoute();
 		const match = ref(null);
-		const matchId = route.params.id;
+		const matchId = router.params.id;
 
 		const getMatch = async id => {
 			try {
@@ -128,6 +168,7 @@ export default {
 						id: id,
 					},
 				});
+				console.log('response: ', response);
 				match.value = response.data;
 			} catch (error) {
 				console.error('Error fetching match data:', error);
@@ -135,6 +176,13 @@ export default {
 		};
 
 		const isMobile = ref(false);
+
+		const manager = ref({
+			name: 'John Doe',
+			photo: '', // URL to the manager's photo or empty for default
+			matchCount: 15,
+			bio: `Hi guys, let's play fun!`,
+		});
 
 		const checkIfMobile = () => {
 			isMobile.value = window.innerWidth <= 960; // Vuetify's breakpoint for smAndDown
@@ -146,6 +194,10 @@ export default {
 
 			if (matchId) {
 				getMatch(matchId);
+			} else {
+				router.push({
+					name: 'TheMain',
+				});
 			}
 		});
 
@@ -181,7 +233,14 @@ export default {
 			matchCount: 5,
 			rating: 5,
 		});
-		return { match, isMobile, matchDetail, pitchDetail, managerDetail };
+		return {
+			match,
+			isMobile,
+			matchDetail,
+			pitchDetail,
+			managerDetail,
+			manager,
+		};
 	},
 };
 </script>
@@ -198,7 +257,7 @@ export default {
 	height: 100%;
 	width: 50%;
 }
-.manager-info {
+/* .manager-info {
 	display: flex;
 	font-size: 15px;
 	height: 100%;
@@ -206,6 +265,20 @@ export default {
 .manager-info > span {
 	margin-right: 20px;
 	height: 100%;
+} */
+.manager-name {
+	font-size: 18px;
+	font-weight: bold;
+}
+
+.manager-match-count {
+	font-size: 14px;
+	color: gray;
+}
+
+.manager-bio {
+	font-size: 14px;
+	margin-top: 10px;
 }
 .booking_bar {
 	display: flex;
