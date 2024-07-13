@@ -1,148 +1,149 @@
 <template>
-	<div>
-		<v-container v-if="match" class="main-container">
-			<!-- 상단 이미지 및 제목 -->
-			<v-row>
-				<v-col cols="12">
-					<v-img
-						src="https://via.placeholder.com/1200x400.png?text=Soccer+Match"
-						aspect-ratio="2.5"
-						class="mb-4"
+	<v-container v-if="match" class="main-container">
+		<!-- 상단 이미지 및 제목 -->
+		<v-row>
+			<v-col cols="12">
+				<v-carousel class="mb-4" hide-delimiters>
+					<v-carousel-item v-for="(image, index) in images" :key="index">
+						<v-img :src="image"></v-img>
+					</v-carousel-item>
+				</v-carousel>
+				<!-- <v-img
+					src="https://via.placeholder.com/1200x400.png?text=Soccer+Match"
+					aspect-ratio="2.5"
+					class="mb-4"
+				>
+					<v-row class="fill-height">
+						<v-col
+							class="d-flex align-center justify-center"
+							cols="12"
+							style="background: rgba(0, 0, 0, 0.4)"
+						>
+							<div class="text-center text-white">
+								<h1 class="display-2 font-weight-bold">Soccer Match</h1>
+								<h2 class="subtitle-1">
+									Join us for an exciting soccer match!
+								</h2>
+							</div>
+						</v-col>
+					</v-row>
+				</v-img> -->
+			</v-col>
+		</v-row>
+
+		<!-- 경기 상세 정보 -->
+		<v-row>
+			<!-- Match Details -->
+			<v-col cols="12" md="8">
+				<v-card class="pa-4">
+					<v-card-title class="headline font-weight-bold"
+						>Match Details</v-card-title
 					>
-						<v-row class="fill-height">
-							<v-col
-								class="d-flex align-center justify-center"
-								cols="12"
-								style="background: rgba(0, 0, 0, 0.4)"
-							>
-								<div class="text-center text-white">
-									<h1 class="display-2 font-weight-bold">Soccer Match</h1>
-									<h2 class="subtitle-1">
-										Join us for an exciting soccer match!
-									</h2>
+					<v-card-text>
+						<v-row>
+							<v-col cols="6">
+								<v-icon class="mr-2">mdi-account-group</v-icon
+								>{{ match.maxPlayers }} players
+							</v-col>
+							<v-col cols="6">
+								<v-icon class="mr-2">mdi-soccer</v-icon>All level
+							</v-col>
+							<v-col cols="6">
+								<v-icon class="mr-2">mdi-gender-male-female</v-icon
+								>{{
+									match.sex == 'M'
+										? 'Men Only'
+										: match.sex == 'F'
+											? 'Women Only'
+											: 'Co-ed'
+								}}
+							</v-col>
+						</v-row>
+					</v-card-text>
+				</v-card>
+
+				<!-- Venue Details -->
+				<v-card class="pa-4 mt-4">
+					<v-card-title class="headline font-weight-bold"
+						>Venue Details</v-card-title
+					>
+					<v-card-text>
+						<v-row>
+							<v-col cols="6">
+								<v-icon class="mr-2">mdi-seat</v-icon
+								>{{ match.capacity }} capacity
+							</v-col>
+							<v-col cols="6">
+								<v-icon class="mr-2">mdi-map-marker</v-icon
+								>{{ match.addressRoad }}
+							</v-col>
+							<v-col cols="6">
+								<v-icon class="mr-2">mdi-shower</v-icon>Showers
+								{{ match.showerRoomYn == 'Y' ? 'available' : 'unavailable' }}
+							</v-col>
+							<v-col cols="6">
+								<v-icon class="mr-2">mdi-parking</v-icon>Parking
+								{{ match.parkingLotYn == 'Y' ? 'available' : 'unavailable' }}
+							</v-col>
+							<v-col cols="6">
+								<v-icon class="mr-2">mdi-cup</v-icon>Drinks
+								{{ match.drinkSoldYn == 'Y' ? 'sold' : 'unsold' }}
+							</v-col>
+						</v-row>
+					</v-card-text>
+				</v-card>
+
+				<!-- Manager Details -->
+				<v-card class="pa-4 mt-4">
+					<v-card-title class="headline font-weight-bold"
+						>Manager Details</v-card-title
+					>
+					<v-card-text>
+						<v-row>
+							<v-col cols="1">
+								<v-avatar size="40">
+									<v-img :src="manager.photo || 'default-avatar.png'"></v-img>
+								</v-avatar>
+							</v-col>
+							<v-col cols="9">
+								<div class="manager-name">{{ manager.name }}</div>
+								<div class="manager-match-count">
+									{{ manager.matchCount }} matches played
 								</div>
 							</v-col>
 						</v-row>
-					</v-img>
-				</v-col>
-			</v-row>
+						<v-row>
+							<v-col cols="10"
+								><div class="manager-bio">„ {{ manager.bio }} “</div></v-col
+							>
+						</v-row>
+					</v-card-text>
+				</v-card>
+			</v-col>
 
-			<!-- 경기 상세 정보 -->
-			<v-row>
-				<!-- Match Details -->
-				<v-col cols="12" md="8">
-					<v-card class="pa-4">
-						<v-card-title class="headline font-weight-bold"
-							>Match Details</v-card-title
-						>
-						<v-card-text>
-							<v-row>
-								<v-col cols="6">
-									<v-icon class="mr-2">mdi-account-group</v-icon
-									>{{ match.maxPlayers }} players
-								</v-col>
-								<v-col cols="6">
-									<v-icon class="mr-2">mdi-soccer</v-icon>All level
-								</v-col>
-								<v-col cols="6">
-									<v-icon class="mr-2">mdi-gender-male-female</v-icon
-									>{{
-										match.sex == 'M'
-											? 'Men Only'
-											: match.sex == 'F'
-												? 'Women Only'
-												: 'Co-ed'
-									}}
-								</v-col>
-							</v-row>
-						</v-card-text>
-					</v-card>
-
-					<!-- Venue Details -->
-					<v-card class="pa-4 mt-4">
-						<v-card-title class="headline font-weight-bold"
-							>Venue Details</v-card-title
-						>
-						<v-card-text>
-							<v-row>
-								<v-col cols="6">
-									<v-icon class="mr-2">mdi-seat</v-icon
-									>{{ match.capacity }} capacity
-								</v-col>
-								<v-col cols="6">
-									<v-icon class="mr-2">mdi-map-marker</v-icon
-									>{{ match.addressRoad }}
-								</v-col>
-								<v-col cols="6">
-									<v-icon class="mr-2">mdi-shower</v-icon>Showers
-									{{ match.showerRoomYn == 'Y' ? 'available' : 'unavailable' }}
-								</v-col>
-								<v-col cols="6">
-									<v-icon class="mr-2">mdi-parking</v-icon>Parking
-									{{ match.parkingLotYn == 'Y' ? 'available' : 'unavailable' }}
-								</v-col>
-								<v-col cols="6">
-									<v-icon class="mr-2">mdi-cup</v-icon>Drinks
-									{{ match.drinkSoldYn == 'Y' ? 'sold' : 'unsold' }}
-								</v-col>
-							</v-row>
-						</v-card-text>
-					</v-card>
-
-					<!-- Manager Details -->
-					<v-card class="pa-4 mt-4">
-						<v-card-title class="headline font-weight-bold"
-							>Manager Details</v-card-title
-						>
-						<v-card-text>
-							<v-row>
-								<v-col cols="1">
-									<v-avatar size="40">
-										<v-img :src="manager.photo || 'default-avatar.png'"></v-img>
-									</v-avatar>
-								</v-col>
-								<v-col cols="9">
-									<div class="manager-name">{{ manager.name }}</div>
-									<div class="manager-match-count">
-										{{ manager.matchCount }} matches played
-									</div>
-								</v-col>
-							</v-row>
-							<v-row>
-								<v-col cols="10"
-									><div class="manager-bio">„ {{ manager.bio }} “</div></v-col
-								>
-							</v-row>
-						</v-card-text>
-					</v-card>
-				</v-col>
-
-				<!-- Join the Match -->
-				<v-col v-if="!isMobile" cols="12" md="4" class="d-none d-md-block">
-					<v-card class="pa-4">
-						<v-card-title class="headline font-weight-bold"
-							>Join the Match</v-card-title
-						>
-						<v-card-text>
-							<p>
-								Sign up now to secure your spot in the upcoming soccer match.
-							</p>
-							<h3 class="price">
-								€{{ match.price.toString().replace('.', ',') }}
-							</h3>
-							<p class="caption">Limited spots available, sign up today!</p>
-							<v-btn color="black" class="book-now-btn" dark>Sign Up</v-btn>
-						</v-card-text>
-					</v-card>
-				</v-col>
-			</v-row>
-		</v-container>
-		<!-- Bottom Navigation for Mobile -->
-		<div v-if="isMobile" class="mobile-bottom-bar">
-			<div class="mobile-bottom-bar-content">
-				<span class="font-weight-bold">Secure your spot now!</span>
-				<v-btn color="black" class="book-now-btn" dark>Sign Up</v-btn>
-			</div>
+			<!-- Join the Match -->
+			<v-col v-if="!isMobile" cols="12" md="4" class="d-none d-md-block">
+				<v-card class="pa-4">
+					<v-card-title class="headline font-weight-bold"
+						>Join the Match</v-card-title
+					>
+					<v-card-text>
+						<p>Sign up now to secure your spot in the upcoming soccer match.</p>
+						<h3 class="price">
+							€{{ match.price.toString().replace('.', ',') }}
+						</h3>
+						<p class="caption">Limited spots available, sign up today!</p>
+						<v-btn color="black" class="book-now-btn" dark>Sign Up</v-btn>
+					</v-card-text>
+				</v-card>
+			</v-col>
+		</v-row>
+	</v-container>
+	<!-- Bottom Navigation for Mobile -->
+	<div v-if="isMobile" class="mobile-bottom-bar">
+		<div class="mobile-bottom-bar-content">
+			<span class="font-weight-bold">Secure your spot now!</span>
+			<v-btn color="black" class="book-now-btn" dark>Sign Up</v-btn>
 		</div>
 	</div>
 </template>
@@ -160,6 +161,14 @@ export default {
 		const router = useRoute();
 		const match = ref(null);
 		const matchId = router.params.id;
+
+		const images = [
+			'https://via.placeholder.com/1200x400.png?text=Futsal+Match+1',
+			'https://via.placeholder.com/1200x400.png?text=Futsal+Match+2',
+			'https://via.placeholder.com/1200x400.png?text=Futsal+Match+3',
+			'https://via.placeholder.com/1200x400.png?text=Futsal+Match+4',
+			'https://via.placeholder.com/1200x400.png?text=Futsal+Match+5',
+		];
 
 		const getMatch = async id => {
 			try {
@@ -234,6 +243,7 @@ export default {
 			rating: 5,
 		});
 		return {
+			images,
 			match,
 			isMobile,
 			matchDetail,
@@ -245,7 +255,14 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
+.main-container {
+	max-width: 1400px;
+	margin: 0 auto;
+	/* margin-top: 30px; */
+	padding-left: 16px;
+	padding-right: 16px;
+}
 .no_dot {
 	list-style-type: none;
 	padding-left: 0px;
@@ -342,5 +359,11 @@ export default {
 	min-height: 40px;
 	height: 40px;
 	background-color: black !important;
+}
+/* Add styles to make carousel arrows transparent */
+.v-btn--icon.v-carousel__prev,
+.v-btn--icon.v-carousel__next {
+	background-color: transparent !important;
+	box-shadow: none !important;
 }
 </style>

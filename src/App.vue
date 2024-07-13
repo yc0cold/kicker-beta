@@ -1,6 +1,6 @@
 <template>
 	<!-- <TheNav></TheNav> -->
-	<v-app>
+	<v-app class="app-container">
 		<TheNav></TheNav>
 		<v-container class="mt-5">
 			<router-view></router-view>
@@ -29,6 +29,8 @@ export default {
 </script>
 
 <style scoped>
+.app-container {
+}
 .mt-5 {
 	margin-top: 32px; /* Adjust the value as needed */
 }

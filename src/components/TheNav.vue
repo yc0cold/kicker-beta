@@ -1,42 +1,51 @@
 <template>
 	<!-- 상단 네비게이션 바 -->
+
 	<v-app-bar app>
-		<v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
-		<v-toolbar-title class="d-flex align-center" @click="goToMain">
-			<span>Kicker</span>
-			<span class="beta-text ml-2">beta</span>
-		</v-toolbar-title>
-		<v-spacer></v-spacer>
-		<v-btn v-if="!isAuthenticated" icon @click="goToLogin">
-			<v-icon>mdi-login</v-icon>
-		</v-btn>
-		<!-- <v-btn v-if="isAuthenticated" icon @click="">
+		<v-container class="main-container">
+			<v-row>
+				<v-col cols="auto" class="d-flex align-center">
+					<v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
+					<v-toolbar-title @click="goToMain" class="ml-2">
+						<span>Kicker</span>
+						<span class="beta-text ml-2">beta</span>
+					</v-toolbar-title>
+				</v-col>
+				<v-spacer></v-spacer>
+				<v-col cols="auto" class="d-flex align-center">
+					<v-btn v-if="!isAuthenticated" icon @click="goToLogin">
+						<v-icon>mdi-login</v-icon>
+					</v-btn>
+					<!-- <v-btn v-if="isAuthenticated" icon @click="">
 			<v-icon>mdi-account</v-icon>
 		</v-btn> -->
-		<v-menu
-			v-if="isAuthenticated"
-			v-model="menu"
-			:close-on-content-click="false"
-			location="bottom"
-			offset-y
-		>
-			<template v-slot:activator="{ props }">
-				<v-btn icon v-bind="props">
-					<v-icon>mdi-account</v-icon>
-				</v-btn>
-			</template>
-			<v-list>
-				<v-list-item @click="goToProfile">
-					<v-list-item-title>My Account</v-list-item-title>
-				</v-list-item>
-				<v-list-item @click="goToBookings">
-					<v-list-item-title>Reservation</v-list-item-title>
-				</v-list-item>
-				<v-list-item @click="logout">
-					<v-list-item-title>Log Out</v-list-item-title>
-				</v-list-item>
-			</v-list>
-		</v-menu>
+					<v-menu
+						v-if="isAuthenticated"
+						v-model="menu"
+						:close-on-content-click="false"
+						location="bottom"
+						offset-y
+					>
+						<template v-slot:activator="{ props }">
+							<v-btn icon v-bind="props">
+								<v-icon>mdi-account</v-icon>
+							</v-btn>
+						</template>
+						<v-list>
+							<v-list-item @click="goToProfile">
+								<v-list-item-title>My Account</v-list-item-title>
+							</v-list-item>
+							<v-list-item @click="goToBookings">
+								<v-list-item-title>Reservation</v-list-item-title>
+							</v-list-item>
+							<v-list-item @click="logout">
+								<v-list-item-title>Log Out</v-list-item-title>
+							</v-list-item>
+						</v-list>
+					</v-menu>
+				</v-col>
+			</v-row>
+		</v-container>
 	</v-app-bar>
 
 	<!-- 네비게이션 드로어 -->
@@ -127,6 +136,14 @@ export default {
 </script>
 
 <style scoped>
+.main-container {
+	max-width: 1400px;
+	margin: 0 auto;
+	/* margin-top: 30px; */
+	padding-left: 16px;
+	padding-right: 16px;
+}
+
 .flex-container {
 	display: flex;
 }
