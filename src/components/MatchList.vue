@@ -20,8 +20,12 @@
 						>
 							<div class="date-btn">
 								<!-- <div>{{ formatMonth(date) }}</div> -->
-								<div>{{ formatDay(date) }}</div>
-								<div>{{ formatWeekDay(date) }}</div>
+								<div :class="getDayClass(formatWeekDay(date))">
+									{{ formatDay(date) }}
+								</div>
+								<div :class="getDayClass(formatWeekDay(date))">
+									{{ formatWeekDay(date) }}
+								</div>
 							</div>
 						</v-btn>
 					</v-col>
@@ -39,34 +43,36 @@
 				:key="index"
 				cols="12"
 				md="6"
-				lg="3"
+				lg="4"
 			>
 				<v-card class="mx-auto my-2" max-width="400" min-width="300" outlined>
 					<v-card-title>
 						<div class="d-flex justify-space-between w-100">
-							<span class="font-weight-bold">{{ match.name }}</span>
+							<span class="font-weight-bold">{{ match.fieldName }}</span>
 							<v-chip
-								v-if="match.isNew"
+								v-if="match.newYn == 'Y'"
 								class="ml-2"
 								color="green"
+								variant="flat"
 								text-color="white"
 								label
 							>
-								New
+								NEW
 							</v-chip>
 						</div>
 					</v-card-title>
-					<v-card-subtitle>
+					<v-card-text>
 						<div class="d-flex justify-space-between w-100">
-							<span>{{ formatDate(match.date) }}</span>
+							<span class="timestamp">{{ formatDate(match.date) }}</span>
 							<span class="price"
 								>€{{ match.price.toString().replace('.', ',') }}
 							</span>
 						</div>
-					</v-card-subtitle>
-					<v-card-text>
+						<div class="address">{{ match.addressRoad }}</div>
 						<div class="d-flex justify-space-between w-100 align-center">
-							<span>{{ match.spots }} spots available</span>
+							<div class="spots">
+								<span v-if="match.spots < 5">{{ match.spots }} spots left</span>
+							</div>
 							<v-btn
 								color="black"
 								class="book-now-btn"
@@ -100,9 +106,12 @@ export default {
 			'20240904',
 			'20240905',
 			'20240906',
+			'20240907',
+			'20240908',
 		]);
+
 		const selectedDate = ref(dates.value[0]);
-		const displayDates = ref(dates.value.slice(0, 4));
+		const displayDates = ref(dates.value.slice(0, 7));
 
 		const formatMonth = date => {
 			if (!date || date.length !== 8) {
@@ -124,6 +133,12 @@ export default {
 			];
 			const month = parseInt(date.slice(4, 6), 10) - 1; // 월은 0부터 시작
 			return monthNames[month];
+		};
+
+		const getDayClass = day => {
+			return {
+				'red-text': day === 'Sat' || day === 'Sun',
+			};
 		};
 
 		const formatDay = date => {
@@ -149,7 +164,6 @@ export default {
 			// Date 객체의 getDay() 메서드로 요일 인덱스 가져오기
 			const weekdayIndex = date.getDay();
 
-			// 요일 이름 반환
 			return weekdays[weekdayIndex];
 		};
 
@@ -258,6 +272,7 @@ export default {
 			prevDate,
 			nextDate,
 			getMatches,
+			getDayClass,
 		};
 	},
 };
@@ -275,8 +290,8 @@ export default {
 	font-family: 'Inter', sans-serif;
 }
 .mx-auto {
-	margin-left: auto;
-	margin-right: auto;
+	margin-left: 10px;
+	margin-right: 10px;
 }
 .my-2 {
 	margin-top: 8px;
@@ -289,17 +304,28 @@ export default {
 	font-weight: bold;
 	font-family: 'Inter', sans-serif;
 }
+.timestamp {
+	font-size: 16px;
+	color: black;
+}
 .price {
 	font-size: 16px;
 	font-weight: bold;
 	color: black;
+}
+.address {
+	margin-top: 10px;
 }
 v-card-title,
 v-card-subtitle,
 v-card-text {
 	font-family: 'Inter', sans-serif;
 }
+.spots {
+	flex: 1 1 60%;
+}
 .book-now-btn {
+	flex: 1 1 40%;
 	min-width: 100px;
 	min-height: 40px;
 	height: 40px;
@@ -314,5 +340,9 @@ v-card-text {
 }
 .selected-date {
 	font-weight: bold;
+	background-color: lightgrey;
+}
+.red-text {
+	color: red;
 }
 </style>
