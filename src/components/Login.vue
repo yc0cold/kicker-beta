@@ -58,6 +58,7 @@
 				<a
 					class="text-blue text-decoration-none"
 					href="#"
+					@click.prevent="goToSignup"
 					rel="noopener noreferrer"
 					target="_blank"
 				>
@@ -176,7 +177,11 @@ export default {
 			//getAllUsers();
 			//router.push({ name: 'TheMain' });
 		};
-		return { callback, isUser };
+
+		const goToSignup = () => {
+			router.push({ name: 'Signup' });
+		};
+		return { callback, isUser, goToSignup };
 	},
 };
 </script>

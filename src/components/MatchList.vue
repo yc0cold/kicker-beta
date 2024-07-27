@@ -1,10 +1,5 @@
 <template>
 	<v-container class="main-container">
-		<v-row>
-			<v-col cols="12">
-				<h1 class="text-center">Upcoming Football Matches</h1>
-			</v-col>
-		</v-row>
 		<v-row class="align-center">
 			<v-col cols="1" class="text-center">
 				<v-btn icon @click="prevDate">
@@ -38,6 +33,12 @@
 			</v-col>
 		</v-row>
 		<v-row>
+			<v-col cols="12" class="text-center" v-if="matches.length === 0">
+				<div class="no-matches">
+					<v-icon color="grey" size="64">mdi-calendar-remove</v-icon>
+					<p>No matches available on this date. Check other dates!</p>
+				</div>
+			</v-col>
 			<v-col
 				v-for="(match, index) in matches"
 				:key="index"
@@ -64,20 +65,36 @@
 					<v-card-text>
 						<div class="d-flex justify-space-between w-100">
 							<span class="timestamp">{{ formatDate(match.date) }}</span>
-							<span class="price"
+							<!-- <span class="price"
 								>€{{ match.price.toString().replace('.', ',') }}
-							</span>
+							</span> -->
 						</div>
-						<div class="address">{{ match.addressRoad }}</div>
+						<div class="address">
+							<a :href="match.mapUrl" target="_blank">{{
+								match.addressRoad
+							}}</a>
+							, Hamburg
+						</div>
 						<div class="d-flex justify-space-between w-100 align-center">
 							<div class="spots">
+								<span
+									><v-icon class="mr-2">mdi-gender-male-female</v-icon
+									>{{
+										match.sex == 'M'
+											? 'Men Only'
+											: match.sex == 'F'
+												? 'Women Only'
+												: 'Co-ed'
+									}}</span
+								>
+								<span> · {{ match.matchType }}</span>
 								<span v-if="match.spots < 5">{{ match.spots }} spots left</span>
 							</div>
 							<v-btn
 								color="black"
 								class="book-now-btn"
 								dark
-								@click="bookMatch(match.id)"
+								@click="bookMatch(match.matchId)"
 								>Book Now</v-btn
 							>
 						</div>
@@ -315,6 +332,7 @@ export default {
 }
 .address {
 	margin-top: 10px;
+	margin-bottom: 10px;
 }
 v-card-title,
 v-card-subtitle,
@@ -332,7 +350,7 @@ v-card-text {
 	background-color: black !important;
 }
 .main-container {
-	max-width: 1400px;
+	max-width: 1200px;
 	margin: 0 auto;
 	/* margin-top: 30px; */
 	padding-left: 16px;
@@ -344,5 +362,23 @@ v-card-text {
 }
 .red-text {
 	color: red;
+}
+.map-link {
+	color: blue;
+	text-decoration: underline;
+	cursor: pointer;
+}
+.no-matches {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	height: 200px;
+	color: grey;
+	font-size: 18px;
+}
+
+.no-matches p {
+	margin-top: 10px;
 }
 </style>

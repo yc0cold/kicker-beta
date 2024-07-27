@@ -1,6 +1,5 @@
 <template>
 	<!-- 상단 네비게이션 바 -->
-
 	<v-app-bar app>
 		<v-container class="main-container">
 			<v-row>

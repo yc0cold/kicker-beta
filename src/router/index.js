@@ -3,6 +3,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 import TheMain from '../views/TheMain.vue';
 import TheMatchDetail from '../views/TheMatchDetail.vue';
 import Login from '../components/Login.vue';
+import Signup from '../components/Signup.vue';
 const router = createRouter({
 	history: createWebHistory(import.meta.env.BASE_URL),
 	routes: [
@@ -20,6 +21,11 @@ const router = createRouter({
 			path: '/login',
 			name: 'Login',
 			component: Login,
+		},
+		{
+			path: '/signup',
+			name: 'Signup',
+			component: Signup,
 		},
 		// {
 		// 	path: '/about',

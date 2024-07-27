@@ -32,6 +32,6 @@ export default {
 .app-container {
 }
 .mt-5 {
-	margin-top: 32px; /* Adjust the value as needed */
+	margin-top: 40px; /* Adjust the value as needed */
 }
 </style>
